@@ -138,6 +138,12 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
 ![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/1.png)
 -------
 ## 二.查询框
+### 要做搜索框我们先要了解NotesList它extends的ListActivity到底是什么？
+#### ListActivity可以看做ListView和Activity的结合，主要是比较方便。但在实现时，有几点要注意。
+* ListActivity可以不用setContentView(R.layout.main)，它默认是LIstView占满屏。
+* 如果想在屏幕中显示其他控件，可以采用如下方法：
+    * 代码中添加：setContentView(R.layout.main)
+    * 在xml文件中添加一个LIstView控件和一个SearchView控件，注意LIstView控件id必须为"@id/Android:list"表示匹配的ListView    
 ### 1.创建一个新的search.xml，里面放上我用作搜索功能的SearchView，并在queryHint加上提示信息。
 ```java
         <SearchView
@@ -221,9 +227,20 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
         });
     }
 ```
-###  在这其中我们对managedQuery()进行分析就比较容易了参数：
-URI:  Content Provider 需要返回的资源索引
-Projection: 用于标识有哪些columns需要包含在返回数据中。
-Selection: 作为查询符合条件的过滤参数，类似于SQL语句中Where之后的条件判断。
-SelectionArgs: 同上。
-SortOrder: 用于对返回信息进行排序。
+###  在这其中我们对managedQuery()进行分析就比较容易了，它的参数有：
+* URI:  Content Provider 需要返回的资源索引
+* Projection: 用于标识有哪些columns需要包含在返回数据中。
+* Selection: 作为查询符合条件的过滤参数，类似于SQL语句中Where之后的条件判断。
+* SelectionArgs: 同上。
+* SortOrder: 用于对返回信息进行排序。
+###  在上述searchview方法中我们在managedQuery()作出以下调整：
+```java
+    Cursor cursor = managedQuery(
+        getIntent().getData(),            
+        PROJECTION,                       
+        NotePad.Notes.COLUMN_NAME_TITLE+ " LIKE '%"+newText+"%' ",// 相当于where语句
+        null,
+        NotePad.Notes.DEFAULT_SORT_ORDER
+    );
+```
+###  再重新setListAdapter，就可以得到一个根据SearchView中输入文字改变而实时刷新的一个搜索界面了
