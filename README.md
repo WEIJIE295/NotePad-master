@@ -6,7 +6,7 @@
 * 闹钟提醒
 * 文件导出
 ## 一.添加时间戳 
-### 1.修改noteslist_item.xml中的样式，增加要显示时间戳的TextView
+### 1.修改noteslist_item.xml中的样式，增加要显示时间戳的TextView。
 ```java
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -59,12 +59,12 @@ private static final String[] PROJECTION = new String[] {
 
     };
 ```
-### 3.修改SimpleCursorAdapter的dataColumns和viewIDs的相关值
+### 3.修改SimpleCursorAdapter的dataColumns和viewIDs的相关值。
 ```java
 final String[] dataColumns = { NotePad.Notes.COLUMN_NAME_CREATE_DATE, NotePad.Notes.COLUMN_NAME_TITLE } ;
 int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
 ```
-### 4.发现这样显示的时间戳格式不对，查看原因原来存进数据库时的所有的DATE值都是LONG，于是我增加DateUtil.java这个类
+### 4.发现这样显示的时间戳格式不对，查看原因原来存进数据库时的所有的DATE值都是LONG，于是我增加DateUtil.java这个类。
 ```java
 public class DateUtil
 {
@@ -125,7 +125,7 @@ public class DateUtil
     }
 }
 ```
-### 5.在NotePadProvider.java这个的存储中作出修改，改为自己格式化的字符串
+### 5.在NotePadProvider.java这个的存储中作出修改，改为自己格式化的字符串。
 ```java
 if (values.containsKey(NotePad.Notes.COLUMN_NAME_CREATE_DATE) == false) {
             values.put(NotePad.Notes.COLUMN_NAME_CREATE_DATE, getTodayTimeStampString());
@@ -137,3 +137,22 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
 -------
 ![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/1.png)
 -------
+## 二.查询框
+### 1.创建一个新的search.xml，里面放上我用作搜索功能的SearchView，并在queryHint加上提示信息。
+```java
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="请输入搜索内容" />
+```
+### 2.回到NotesList.java，创建一个SearchView成员变量：
+```java
+    SearchView mSearch;
+```
+###   在onCreate方法中，显示和获取searchview控件
+```java
+    setContentView(R.layout.search);
+    mSearch = (SearchView)findViewById(R.id.searchView);
+```
