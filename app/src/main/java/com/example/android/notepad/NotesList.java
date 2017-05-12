@@ -620,13 +620,7 @@ public class NotesList extends ListActivity {
     class ClickEvent implements View.OnClickListener {
         @Override
         public void onClick (View v)  {
-            final AlertDialog alertDialog = new AlertDialog.Builder(NotesList.this)
-                    .setPositiveButton("Exit", new DialogInterface.OnClickListener() {//退出按钮
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-
-            }).create();
+            final AlertDialog alertDialog = new AlertDialog.Builder(NotesList.this).create();
             alertDialog.show();
             Window window = alertDialog.getWindow();
             window.setContentView(R.layout.changecolor);
