@@ -512,7 +512,7 @@ public class ClockActivity extends Activity {
 ![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/7.png)
 -------
 ## 五.文件导出
-###  1.建立文件夹、生成文件并写入文本文件内容代码，这里参考http://www.cnblogs.com/liqw/p/4014760.html这篇文章
+###  1.建立文件夹、生成文件并写入文本文件内容代码，这里参考http://www.cnblogs.com/liqw/p/4014760.html 这篇文章
 ```java
     public class ToFile {
     public static void writeTxtToFile(String strcontent, String filePath,String fileName) {
