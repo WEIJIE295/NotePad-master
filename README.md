@@ -142,8 +142,7 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
 #### ListActivity可以看做ListView和Activity的结合，主要是比较方便。但在实现时，有几点要注意。
 * ListActivity可以不用setContentView(R.layout.main)，它默认是LIstView占满屏。
 * 如果想在屏幕中显示其他控件，可以采用如下方法：
-    * 代码中添加：setContentView(R.layout.main)
-    * 在xml文件中添加一个LIstView控件和一个SearchView控件，注意LIstView控件id必须为"@id/Android:list"表示匹配的ListView    
+    * 代码中添加：setContentView(R.layout.main)* 在xml文件中添加一个LIstView控件和一个SearchView控件，注意LIstView控件id必须为"@id/Android:list"表示匹配的ListView    
 ### 1.创建一个新的search.xml，里面放上我用作搜索功能的SearchView，并在queryHint加上提示信息。
 ```java
         <SearchView
