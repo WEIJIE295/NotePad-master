@@ -7,7 +7,7 @@
 * 文件导出
 ## 1.添加时间戳 
 修改noteslist_item.xml中的样式，增加要显示时间戳的TextView
-` ``java
+```java
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -48,4 +48,4 @@
         android:layout_height="1dp"
         android:background="@color/Null"/>
 </LinearLayout>
-` ``
+```
