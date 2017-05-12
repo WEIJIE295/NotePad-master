@@ -278,8 +278,8 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
     private Button btn_color;
 ```
 ```java
-        btn_color=(Button)findViewById(R.id.background);
-        btn_color.setOnClickListener(new ClickEvent());
+    btn_color=(Button)findViewById(R.id.background);
+    btn_color.setOnClickListener(new ClickEvent());
 ```
 ###  5. 点击事件
 ```java
@@ -405,3 +405,223 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
     }
 ```
 ###  9.做出来的效果图
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/4.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/5.png)
+-------
+## 四.闹钟提醒
+###  1.一个记事本app中所记之事都是很重要的,一个优秀的定时提醒功能必定可以帮助你合理安排工作、处理紧急事件,甚至规划休息时间等等
+###  2.首先我们在刚刚的search.xml中添加BUTTON。
+```java
+   <Button
+        android:id="@+id/notice"
+        android:layout_marginTop="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/alarmclock"
+        android:layout_marginLeft="5dp"
+        />
+```
+###  2.在NotesList创建一个相关变量，其中AlarmManager，顾名思义，就是“提醒”，是Android中常用的一种系统级别的提示服务，在特定的时刻为我们广播一个指定的Intent。简单的说就是我们设定一个时间，然后在该时间到来时，AlarmManager为我们广播一个我们设定的Intent,通常我们使用 PendingIntent，PendingIntent可以理解为Intent的封装包，简单的说就是在Intent上在加个指定的动作。
+```java
+    private Button btn_alarmclock;
+    private AlarmManager alarmManager;
+    private PendingIntent pi;
+```
+###  3.并在onCreate()中获取控件同时设置点击事件。
+```java
+    btn_alarmclock=(Button)findViewById(R.id.notice);
+    btn_alarmclock.setOnClickListener(new AlarmEvent());
+```
+###  4.在写之前我们先创建一个bindViews()方法：其中包括getSystemService()，getSystemService是Android很重要的一个API，它是Activity的一个方法，根据传入的NAME来取得对应的Object，然后转换成相应的服务对象。这次我传入ALARM_SERVICE即闹钟服务。和一个不是立刻执行的PendingIntent.getActivity()，其中4个参数分别对应着Intent的3个行为，跳转到一个activity组件、打开一个广播组件和打开一个服务组件。
+```java
+    private void bindViews() {
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(NotesList.this, ClockActivity.class);
+        pi = PendingIntent.getActivity(NotesList.this, 0, intent, 0);
+    }
+```
+###  5.写闹钟的主体部分：其中使用时间对话框TimePickerDialog，使用onTimeSet设置当前时间，并根据传入设置用户选择时间的Calendar对象，然后设置AlarmManager在Calendar对应的时间启动Activity。调用AlarmManager的set( )方法设置单次闹钟的闹钟类型,启动时间以及PendingIntent对象!
+```java
+    class AlarmEvent implements View.OnClickListener {
+        @Override
+        public void onClick (View v)  {
+            Calendar currentTime = Calendar.getInstance();
+            new TimePickerDialog(NotesList.this, 0,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view,
+                                              int hourOfDay, int minute) {
+                            //设置当前时间
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            // 根据用户选择的时间来设置Calendar对象
+                            c.set(Calendar.HOUR, hourOfDay);
+                            c.set(Calendar.MINUTE, minute);
+                            // Calendar对应的时间启动Activity
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+                            Log.e("HEHE",c.getTimeInMillis()+"");   //这里的时间是一个unix时间戳
+                            // 提示闹钟设置完毕:
+                            Toast.makeText(NotesList.this, "闹钟设置完毕~",Toast.LENGTH_SHORT).show();
+                        }
+                    }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
+                    .get(Calendar.MINUTE), false).show();
+        }
+    }
+```
+###  6.ClockActivity类的编写。
+```java
+public class ClockActivity extends Activity {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.search);
+        //创建一个闹钟提醒的对话框,点击确定关闭铃声与页面
+        new AlertDialog.Builder(ClockActivity.this).setTitle("闹钟").setMessage("设定的时间到了哦！").show();
+        /*
+         *  延时启动
+         */
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent=new Intent(ClockActivity.this,NotesList.class);
+                startActivity(intent);
+                ClockActivity.this.finish();
+            }
+        }, 1500);
+
+    }
+```
+###  7.最后别忘了在AndroidManifest.xml里为ClockActivity注册。
+```java
+    <activity android:name=".ClockActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.CREATE_LIVE_FOLDER" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
+```
+###  8.这样一个闹钟提醒功能就OK了。
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/6.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/7.png)
+-------
+## 五.文件导出
+###  1.建立文件夹、生成文件并写入文本文件内容代码，这里参考http://www.cnblogs.com/liqw/p/4014760.html这篇文章
+```java
+    public class ToFile {
+    public static void writeTxtToFile(String strcontent, String filePath,String fileName) {
+        // 生成文件夹之后，再生成文件，不然会出错
+        makeFilePath(filePath, fileName);
+
+        String strFilePath = filePath + fileName;
+
+        // 每次写入时，都换行写
+        String strContent = strcontent + "\n";
+
+        try {
+            File file = new File(strFilePath);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();//创建目录
+                file.createNewFile();//创建文件
+            }else {
+                file.delete();//删除重新创建
+                file.getParentFile().mkdirs();//创建目录
+                file.createNewFile();//创建文件
+            }
+            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rwd");
+            randomAccessFile.write(strContent.getBytes());
+            randomAccessFile.close();
+        } catch (Exception e) {
+            Log.e("TestFile", "Error on write File:" + e);
+        }
+    }
+
+    /**
+     * 生成文件
+     */
+    public static File makeFilePath(String filePath, String fileName) {
+        File file = null;
+        makeRootDirectory(filePath);
+        try {
+            file = new File(filePath + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * 生成文件夹
+     */
+    public static void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+    }
+}
+```
+###  2.在上下文菜单中创建相关按钮
+```java
+    <item android:id="@+id/context_export"
+        android:title="@string/menu_export" />
+```
+###  3.添加权限
+```java
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
+###  4.onContextItemSelected中绑定点击事件
+```java
+    case R.id.context_export:
+                Cursor cursor;
+                CursorLoader cursorLoader = new CursorLoader(
+                        this,
+                        noteUri,
+                        new String[]{NotePad.Notes.COLUMN_NAME_TITLE,
+                                NotePad.Notes.COLUMN_NAME_NOTE},
+                        null,
+                        null,
+                        null);
+                cursor = cursorLoader.loadInBackground();
+
+                /*
+                 * 返回指定列
+                 */
+                int colNoteIndex = cursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_NOTE);//返回NOTE列
+                int colTitleIndex = cursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_TITLE);//返回TITLE列
+
+                cursor.moveToFirst();//游标下移
+
+                //设置文件路径
+                String filePath = Environment.getExternalStorageDirectory().getPath() + "/NotePad/ExportTxt/";
+                //保存文件
+                ToFile.writeTxtToFile(cursor.getString(colNoteIndex),filePath,cursor.getString(colTitleIndex));
+                //显示
+                Toast.makeText(this,"Export Success!",Toast.LENGTH_LONG).show();
+                return true;
+```
+###  5.上面的也可以用managedquery，但是managedquery方法过时。所以我用了cursorLoader替代，参数和managedquery大同小异。
+###  6.下面是效果图
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/8.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/9.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/10.png)
+-------
