@@ -156,3 +156,74 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
     setContentView(R.layout.search);
     mSearch = (SearchView)findViewById(R.id.searchView);
 ```
+###   初始化searchview控件
+```java
+    if(mSearch==null){
+            return;
+        }else {
+            //获取ImageView的id
+            int imgId = mSearch.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
+            //获取到TextView的ID
+            int id = mSearch.getContext().getResources().getIdentifier("android:id/search_src_text",null,null);
+            //获取ImageView
+            ImageView searchButton = (ImageView) mSearch.findViewById(imgId);
+            //获取到TextView的控件
+            TextView textView = (TextView) mSearch.findViewById(id);
+            //设置图片
+            searchButton.setImageResource(R.drawable.search);
+            //不使用默认
+            mSearch.setIconifiedByDefault(false);
+            textView.setTextColor(getResources().getColor(R.color.Black));
+        }
+```
+###   设置当点击搜索按钮时触发的方法和搜索内容改变时触发的方法
+```java
+    mSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // 当点击搜索按钮时触发该方法
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            // 当搜索内容改变时触发该方法
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!TextUtils.isEmpty(newText)){
+
+                    Cursor cursor = managedQuery(
+                            getIntent().getData(),            // Use the default content URI for the provider.
+                            PROJECTION,                       // Return the note ID and title for each note.
+                            NotePad.Notes.COLUMN_NAME_TITLE+ " LIKE '%"+newText+"%' ",                             // 相当于where语句
+                            null,                             // No where clause, therefore no where column values.
+                            NotePad.Notes.DEFAULT_SORT_ORDER  // Use the default sort order.
+                    );
+                    final String[] dataColumn = { NotePad.Notes.COLUMN_NAME_CREATE_DATE, NotePad.Notes.COLUMN_NAME_TITLE } ;
+
+                    // The view IDs that will display the cursor columns, initialized to the TextView in
+                    // noteslist_item.xml
+                    int[] viewID = {android.R.id.text1,android.R.id.text2 };
+                    SimpleCursorAdapter adapter1
+                            = new SimpleCursorAdapter(
+                            NotesList.this,                             // The Context for the ListView
+                            R.layout.noteslist_item,          // Points to the XML for a list item
+                            cursor,                           // The cursor to get items from
+                            dataColumn,
+                            viewID
+                    );
+                    //重新setListAdapter
+                    setListAdapter(adapter1);
+                }else{
+                    //恢复默认setListAdapter
+                    setListAdapter(adapter);
+                }
+                return false;
+            }
+        });
+    }
+```
+###  在这其中我们对managedQuery()进行分析就比较容易了参数：
+URI:  Content Provider 需要返回的资源索引
+Projection: 用于标识有哪些columns需要包含在返回数据中。
+Selection: 作为查询符合条件的过滤参数，类似于SQL语句中Where之后的条件判断。
+SelectionArgs: 同上。
+SortOrder: 用于对返回信息进行排序。
