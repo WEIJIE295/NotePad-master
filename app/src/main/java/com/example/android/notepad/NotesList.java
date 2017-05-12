@@ -700,7 +700,7 @@ public class NotesList extends ListActivity {
                             // 根据用户选择的时间来设置Calendar对象
                             c.set(Calendar.HOUR, hourOfDay);
                             c.set(Calendar.MINUTE, minute);
-                            // ②设置AlarmManager在Calendar对应的时间启动Activity
+                            // Calendar对应的时间启动Activity
                             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
                             Log.e("HEHE",c.getTimeInMillis()+"");   //这里的时间是一个unix时间戳
                             // 提示闹钟设置完毕:
