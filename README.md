@@ -134,3 +134,6 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
             values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, getTodayTimeStampString());        
 ```
 ### 6.成功显示时间戳
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/1.png)
+-------
