@@ -242,3 +242,166 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
     );
 ```
 ###  再重新setListAdapter，就可以得到一个根据SearchView中输入文字改变而实时刷新的一个搜索界面了
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/2.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/3.png)
+-------
+
+## 三.修改背景色
+###  1.首先思考用户修改过的背景色应该保存，在下次打开应用时自动设置，于是我运用了SharedPreferences
+#### 获取SharedPreferences的两种方式:
+* 调用Context对象的getSharedPreferences()方法
+* 调用Activity对象的getPreferences()方法
+#### 两种方式的区别:
+* 调用Context对象的getSharedPreferences()方法获得的SharedPreferences对象可以被同一应用程序下的其他组件共享.
+* 调用Activity对象的getPreferences()方法获得的SharedPreferences对象只能在该Activity中使用.
+###  2.创建一个SharedPreferences变量
+```java
+    private SharedPreferences sp;
+```
+###  3.设置初始的颜色，如果存在就设置为之前设置过的背景色，如果不存在就设置为浅黄色(#FFFFE0)
+```java
+        sp = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        preferencescolor=sp.getString("color", "");
+        //设置Listview的背景色
+        if(preferencescolor.equals("")){
+            getListView().setBackgroundColor(Color.parseColor("#FFFFE0"));
+        }
+        else {
+            getListView().setBackgroundColor(Color.parseColor(preferencescolor));
+        }
+```
+###  4. 创建一个Button变量，并在onCreate()中获取控件同时设置点击事件
+```java
+    private Button btn_color;
+```
+```java
+        btn_color=(Button)findViewById(R.id.background);
+        btn_color.setOnClickListener(new ClickEvent());
+```
+###  5. 点击事件
+```java
+    class ClickEvent implements View.OnClickListener {
+        @Override
+        public void onClick (View v)  {
+        }
+    }
+```
+###  6.这个时候我想用点击事件触发一个AlertDialog，于是我先创建一个changecolor.xml
+```java
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/Black">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更 改 背 景"
+            android:textSize="20dp"
+            android:textColor="@color/White"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:clickable="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4169E1"
+            android:id="@+id/RoyalBlue"
+            android:clickable="true"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#98FB98"
+            android:id="@+id/PaleGreen"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F0E68C"
+            android:id="@+id/Khaki"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#D3D3D3"
+            android:id="@+id/LightGrey"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>
+```
+###  7.在点击事件中绑定颜色按钮点击事件，设置颜色点击事件监听
+```java
+            final AlertDialog alertDialog = new AlertDialog.Builder(NotesList.this).create();
+            alertDialog.show();
+            Window window = alertDialog.getWindow();
+            window.setContentView(R.layout.changecolor);
+
+            TextView color_RoyalBlue = (TextView)alertDialog.getWindow().findViewById(R.id.RoyalBlue);
+            TextView color_PaleGreen = (TextView)alertDialog.getWindow().findViewById(R.id.PaleGreen);
+            TextView color_Khaki = (TextView)alertDialog.getWindow().findViewById(R.id.Khaki);
+            TextView color_LightGrey = (TextView)alertDialog.getWindow().findViewById(R.id.LightGrey);
+
+            color_RoyalBlue.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preferencescolor="#4169E1";
+                    getListView().setBackgroundColor(Color.parseColor(preferencescolor));
+                    putColor(preferencescolor);
+                    alertDialog.dismiss();
+                }
+            });
+
+            color_PaleGreen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preferencescolor="#98FB98";
+                    getListView().setBackgroundColor(Color.parseColor(preferencescolor));
+                    putColor(preferencescolor);
+                    alertDialog.dismiss();
+                }
+            });
+
+            color_Khaki.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preferencescolor="#F0E68C";
+                    getListView().setBackgroundColor(Color.parseColor(preferencescolor));
+                    putColor(preferencescolor);
+                    alertDialog.dismiss();
+                }
+            });
+
+            color_LightGrey.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preferencescolor="#D3D3D3";
+                    getListView().setBackgroundColor(Color.parseColor(preferencescolor));
+                    putColor(preferencescolor);
+                    alertDialog.dismiss();
+                }
+            });
+
+```
+###  8.其中使用SharedPreferences保存颜色的方法putColor()如下：
+```java
+    private void putColor(String color){
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("color", color);
+        editor.commit();
+    }
+```
+###  9.做出来的效果图
