@@ -9,6 +9,20 @@
         android:background="#FFFFE0"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/notice"
+            android:layout_marginTop="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/alarmclock"
+            android:layout_marginLeft="5dp"
+            android:onClick="alarmclock"/>
+        <View
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="@color/color1"/>
+        <Button
             android:id="@+id/background"
             android:layout_marginTop="10dp"
             android:layout_width="30dp"
@@ -18,9 +32,9 @@
             android:onClick="popupmenu"/>
         <View
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="2dp"
-            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
             android:background="@color/color1"/>
         <SearchView
             android:id="@+id/searchView"
@@ -33,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#D3D3D3"/>
+
     <ListView
         android:id="@id/android:list"
         android:layout_width="fill_parent"

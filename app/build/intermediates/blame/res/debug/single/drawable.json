@@ -20,12 +20,12 @@
         "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\drawable\\shape_button.xml"
     },
     {
-        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\to_do.png",
-        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\drawable\\to_do.png"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_menu_save.png",
         "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\drawable\\ic_menu_save.png"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\to_do.png",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\drawable\\to_do.png"
     },
     {
         "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_menu_compose.png",

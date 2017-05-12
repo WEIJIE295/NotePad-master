@@ -16,13 +16,17 @@
 
 package com.example.android.notepad;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +34,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -51,6 +56,10 @@ import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 /**
  * Displays a list of notes. Will display notes from the {@link Uri}
@@ -68,9 +77,15 @@ public class NotesList extends ListActivity {
 
     private Button btn_color;
 
+    private Button btn_alarmclock;
+
     private String preferencescolor;
 
     private SharedPreferences sp;
+
+
+    private AlarmManager alarmManager;
+    private PendingIntent pi;
 
     // For logging and debugging
     private static final String TAG = "NotesList";
@@ -98,6 +113,7 @@ public class NotesList extends ListActivity {
         // The user does not need to hold down the key to use menu shortcuts.
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
 
+        bindViews();
 
         //显示searchview控件
         setContentView(R.layout.search);
@@ -107,6 +123,10 @@ public class NotesList extends ListActivity {
         btn_color=(Button)findViewById(R.id.background);
 
         btn_color.setOnClickListener(new ClickEvent());
+
+        btn_alarmclock=(Button)findViewById(R.id.notice);
+
+        btn_alarmclock.setOnClickListener(new AlarmEvent());
 
         if(mSearch==null){
             return;
@@ -531,6 +551,34 @@ public class NotesList extends ListActivity {
   
             // Returns to the caller and skips further processing.
             return true;
+
+            case R.id.context_export:
+                Cursor cursor;
+                CursorLoader cursorLoader = new CursorLoader(
+                        this,
+                        noteUri,
+                        new String[]{NotePad.Notes.COLUMN_NAME_TITLE,
+                                NotePad.Notes.COLUMN_NAME_NOTE},
+                        null,
+                        null,
+                        null);
+                cursor = cursorLoader.loadInBackground();
+
+                /*
+                 * 返回指定列
+                 */
+                int colNoteIndex = cursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_NOTE);//返回NOTE列
+                int colTitleIndex = cursor.getColumnIndex(NotePad.Notes.COLUMN_NAME_TITLE);//返回TITLE列
+
+                cursor.moveToFirst();//游标下移
+
+                //设置文件路径
+                String filePath = Environment.getExternalStorageDirectory().getPath() + "/NotePad/ExportTxt/";
+                //保存文件
+                ToFile.writeTxtToFile(cursor.getString(colNoteIndex),filePath,cursor.getString(colTitleIndex));
+                //显示
+                Toast.makeText(this,"Export Success!",Toast.LENGTH_LONG).show();
+                return true;
         default:
             return super.onContextItemSelected(item);
         }
@@ -635,5 +683,37 @@ public class NotesList extends ListActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("color", color);
         editor.commit();
+    }
+
+    private void bindViews() {
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(NotesList.this, ClockActivity.class);
+        pi = PendingIntent.getActivity(NotesList.this, 0, intent, 0);
+    }
+
+    class AlarmEvent implements View.OnClickListener {
+        @Override
+        public void onClick (View v)  {
+            Calendar currentTime = Calendar.getInstance();
+            new TimePickerDialog(NotesList.this, 0,
+                    new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view,
+                                              int hourOfDay, int minute) {
+                            //设置当前时间
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            // 根据用户选择的时间来设置Calendar对象
+                            c.set(Calendar.HOUR, hourOfDay);
+                            c.set(Calendar.MINUTE, minute);
+                            // ②设置AlarmManager在Calendar对应的时间启动Activity
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+                            Log.e("HEHE",c.getTimeInMillis()+"");   //这里的时间是一个unix时间戳
+                            // 提示闹钟设置完毕:
+                            Toast.makeText(NotesList.this, "闹钟设置完毕~",Toast.LENGTH_SHORT).show();
+                        }
+                    }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
+                    .get(Calendar.MINUTE), false).show();
+        }
     }
 }
