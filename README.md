@@ -5,8 +5,8 @@
 * 修改背景色 
 * 闹钟提醒
 * 文件导出
-## 1.添加时间戳 
-修改noteslist_item.xml中的样式，增加要显示时间戳的TextView
+## 一.添加时间戳 
+### 1.修改noteslist_item.xml中的样式，增加要显示时间戳的TextView
 ```java
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -49,3 +49,19 @@
         android:background="@color/Null"/>
 </LinearLayout>
 ```
+### 2.进入notelist.java PROJECTION 契约类的变量值加一列。
+```java
+private static final String[] PROJECTION = new String[] {
+            NotePad.Notes._ID, // 0
+            NotePad.Notes.COLUMN_NAME_TITLE,// 1
+            //加上时间
+            NotePad.Notes.COLUMN_NAME_CREATE_DATE //2
+
+    };
+```
+修改SimpleCursorAdapter的dataColumns和viewIDs的相关值
+```java
+final String[] dataColumns = { NotePad.Notes.COLUMN_NAME_CREATE_DATE, NotePad.Notes.COLUMN_NAME_TITLE } ;
+int[] viewIDs = { android.R.id.text1,android.R.id.text2 };
+```
+
