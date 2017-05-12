@@ -242,3 +242,10 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
     );
 ```
 ###  再重新setListAdapter，就可以得到一个根据SearchView中输入文字改变而实时刷新的一个搜索界面了
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/2.png)
+-------
+-------
+![Alt text](https://github.com/linylx/NotePad-master/blob/master/img/3.png)
+-------
+
