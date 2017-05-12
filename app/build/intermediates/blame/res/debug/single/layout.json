@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\noteslist_item.xml",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\layout\\noteslist_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\title_editor.xml",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\layout\\title_editor.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\note_editor.xml",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\layout\\note_editor.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\search.xml",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\layout\\search.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\build\\intermediates\\res\\merged\\debug\\layout\\changecolor.xml",
+        "source": "C:\\Users\\Administrator\\Desktop\\NotePad-master\\NotePad-master\\app\\src\\main\\res\\layout\\changecolor.xml"
+    }
+]

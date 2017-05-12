@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Black">#000000 </color>
+    <color name="Gray">#666666 </color>
+    <color name="GreenPale">#00FF00</color>
+    <color name="MainBoby">#3f3b3e </color>
+    <color name="Null">#00000000 </color>
+    <color name="White">#FFFFFF </color>
+    <color name="add_bg_normal">#ff8200</color>
+    <color name="add_bg_pressed">#d46403</color>
+    <color name="color1">#66b7e1</color>
+    <color name="color2">#fff89a</color>
+    <color name="color3">#afdde3</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorRed">#FF0000 </color>
+    <string name="app_name">NotePad</string>
+    <string name="button_ok">OK</string>
+    <string name="error_message">Error loading note</string>
+    <string name="error_title">Error</string>
+    <string name="live_folder_name">Notes</string>
+    <string name="menu_add">New note</string>
+    <string name="menu_copy">Copy</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_open">Open</string>
+    <string name="menu_paste">Paste</string>
+    <string name="menu_revert">Revert changes</string>
+    <string name="menu_save">Save</string>
+    <string name="nothing_to_save">There is nothing to save</string>
+    <string name="resolve_edit">Edit note</string>
+    <string name="resolve_title">Edit title</string>
+    <string name="text_title">Title:</string>
+    <string name="title_create">New note</string>
+    <string name="title_edit">Edit: %1$s</string>
+    <string name="title_edit_title">Note title:</string>
+    <string name="title_notes_list">Notes</string>
+</resources>
