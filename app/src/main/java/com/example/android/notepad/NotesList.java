@@ -113,7 +113,7 @@ public class NotesList extends ListActivity {
         // The user does not need to hold down the key to use menu shortcuts.
         setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
 
-        bindViews();
+        initAlarmViews();
 
         //显示searchview控件
         setContentView(R.layout.search);
@@ -679,7 +679,7 @@ public class NotesList extends ListActivity {
         editor.commit();
     }
 
-    private void bindViews() {
+    private void initAlarmViews() {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(NotesList.this, ClockActivity.class);
         pi = PendingIntent.getActivity(NotesList.this, 0, intent, 0);
@@ -694,16 +694,13 @@ public class NotesList extends ListActivity {
                         @Override
                         public void onTimeSet(TimePicker view,
                                               int hourOfDay, int minute) {
-                            //设置当前时间
                             Calendar c = Calendar.getInstance();
                             c.setTimeInMillis(System.currentTimeMillis());
-                            // 根据用户选择的时间来设置Calendar对象
                             c.set(Calendar.HOUR, hourOfDay);
                             c.set(Calendar.MINUTE, minute);
-                            // Calendar对应的时间启动Activity
+                            //启动Activity
                             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-                            Log.e("HEHE",c.getTimeInMillis()+"");   //这里的时间是一个unix时间戳
-                            // 提示闹钟设置完毕:
+                            Log.e("HEHE",c.getTimeInMillis()+"");
                             Toast.makeText(NotesList.this, "闹钟设置完毕~",Toast.LENGTH_SHORT).show();
                         }
                     }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
