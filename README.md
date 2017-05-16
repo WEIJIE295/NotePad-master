@@ -437,7 +437,7 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
 ```
 ###  4.在写之前我们先创建一个bindViews()方法：其中包括getSystemService()，getSystemService是Android很重要的一个API，它是Activity的一个方法，根据传入的NAME来取得对应的Object，然后转换成相应的服务对象。这次我传入ALARM_SERVICE即闹钟服务。和一个不是立刻执行的PendingIntent.getActivity()，其中4个参数分别对应着Intent的3个行为，跳转到一个activity组件、打开一个广播组件和打开一个服务组件。
 ```java
-    private void bindViews() {
+   private void initAlarmViews() {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(NotesList.this, ClockActivity.class);
         pi = PendingIntent.getActivity(NotesList.this, 0, intent, 0);
