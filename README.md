@@ -454,16 +454,13 @@ if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
                         @Override
                         public void onTimeSet(TimePicker view,
                                               int hourOfDay, int minute) {
-                            //设置当前时间
                             Calendar c = Calendar.getInstance();
                             c.setTimeInMillis(System.currentTimeMillis());
-                            // 根据用户选择的时间来设置Calendar对象
                             c.set(Calendar.HOUR, hourOfDay);
                             c.set(Calendar.MINUTE, minute);
-                            // Calendar对应的时间启动Activity
+                            //启动Activity
                             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
-                            Log.e("HEHE",c.getTimeInMillis()+"");   //这里的时间是一个unix时间戳
-                            // 提示闹钟设置完毕:
+                            Log.e("HEHE",c.getTimeInMillis()+"");   
                             Toast.makeText(NotesList.this, "闹钟设置完毕~",Toast.LENGTH_SHORT).show();
                         }
                     }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
@@ -479,7 +476,6 @@ public class ClockActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
-        //创建一个闹钟提醒的对话框,点击确定关闭铃声与页面
         new AlertDialog.Builder(ClockActivity.this).setTitle("闹钟").setMessage("设定的时间到了哦！").show();
         /*
          *  延时启动
